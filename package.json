@@ -47,9 +47,12 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
+    "director": "^1.2.8",
+    "pathparser": "^1.0.0",
     "qr-scanner": "^1.2.0",
     "qrious": "^4.0.2",
-    "raw-loader": "^4.0.2"
+    "raw-loader": "^4.0.2",
+    "tailwindcss": "^2.1.2"
   },
   "repository": {
     "type": "git",

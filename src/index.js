@@ -1,12 +1,13 @@
+// var director = require("director");
+// var router = new director.http.Router();
+
 import QRious from "QRious";
 import QrScanner from "qr-scanner";
 import qrScannerWorkerSource from "../node_modules/qr-scanner/qr-scanner-worker.min.js";
 QrScanner.WORKER_PATH = URL.createObjectURL(new Blob([qrScannerWorkerSource]));
 
-// Test import of styles
 import "@/styles/index.scss";
 
-const app = document.querySelector("#root");
 const videoElem = document.querySelector("video");
 var qr;
 var qrScanner;
@@ -27,27 +28,27 @@ const save = () => {
   link.click();
 };
 
-const init = () => {
+const initDrawer = () => {
   //drawer part
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   var canvas = document.querySelector("canvas");
   qr = new QRious({
     element: canvas,
+    size: 365,
     value: `${urlParams.get("id")}${urlParams.get("secret")}`,
   });
-
-  // scanner part
-  qrScanner = new QrScanner(videoElem, (result) =>
-    console.log("decoded qr code:", result)
-  );
-
-  QrScanner.scanImage(image)
-    .then((result) => console.log(result))
-    .catch((error) => console.log(error || "No QR code found."));
 };
 
-const scan = () => {
+const initScanner = () => {
+  // scanner part
+  qrScanner = new QrScanner(videoElem, (result) => {
+    console.log("decoded qr code:", result);
+    document.querySelector("#details").textContent = result;
+  });
+};
+
+const scanStart = () => {
   qrScanner.start();
 };
 
@@ -55,7 +56,37 @@ const stop = () => {
   qrScanner.stop();
 };
 
-init();
 window.save = save;
-window.scan = scan;
+window.scanStart = scanStart;
 window.stop = stop;
+
+const view = function () {
+  console.log("view");
+  document.title = "View QR code";
+  document.querySelector(".view").style.display = "block";
+  document.querySelector(".scan").style.display = "none";
+  initDrawer();
+  if (qrScanner) {
+    qrScanner.stop();
+  }
+};
+const scan = function () {
+  console.log("view");
+  document.title = "scan QR code";
+  document.querySelector(".scan").style.display = "block";
+  document.querySelector(".view").style.display = "none";
+  initScanner();
+};
+
+var routes = {
+  "/view": view,
+  "/scan": scan,
+};
+
+var router = Router(routes);
+router.init();
+// document.addEventListener("DOMContentLoaded", function () {
+// var router = new director.Router(routes);
+// //.configure({});
+// router.init();
+// // });

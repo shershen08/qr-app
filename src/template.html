@@ -4,18 +4,54 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <script src="https://rawgit.com/flatiron/director/master/build/director.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
 
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
 
   <body>
-    <div id="root">
-      <canvas></canvas>
-      <button onClick="save()">Сохранить</button>
-      <hr />
-      <button onClick="scan()">Scan</button>
-      <button onClick="stop()">stop</button>
-      <video></video>
+    <nav>
+      <a href="#/view?id=45678&secret=dfghjk">view</a> |
+      <a href="#/scan">scan</a>
+    </nav>
+    <div id="root" class="text-center">
+      <div class="view px-4 py-5 my-5" style="display: none">
+        <div class="px-4 py-5 my-5 text-center">
+          <canvas width="365" height="365"></canvas>
+          <p>
+            <strong>IMPORTANT</strong><br />
+            Save QR code just now.<br />
+            You will need to show this code when entering the event.
+          </p>
+        </div>
+        <button onClick="save()" class="btn btn-success btn-lg px-4 me-sm-3">
+          Сохранить
+        </button>
+      </div>
+      <div class="scan" style="display: none">
+        <div
+          id="details"
+          class="my-5 text-center"
+          style="position: absolute"
+        ></div>
+        <div>
+          <video></video>
+        </div>
+        <button
+          style="position: absolute; bottom: 20%"
+          onClick="scanStart()"
+          class="btn btn-primary btn-lg px-4 me-sm-3"
+        >
+          Scan
+        </button>
+        <!-- <button onClick="stop()">stop</button> -->
+      </div>
     </div>
   </body>
 </html>
